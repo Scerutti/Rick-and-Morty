@@ -1,22 +1,31 @@
-import logo from './logo.svg';
+import imageHome from "./img/rick-morty.png"
+import axios from 'axios'
 import './App.css';
+import { useState } from "react";
+import Characters from "./components/Characters";
 
 function App() {
+  const [characters,setCharacters] = useState(null);
+
+  const handdleSelect = async () =>{
+    const infoApi = await axios ("https://rickandmortyapi.com/api/character/")
+    const character = infoApi.data
+    
+    setCharacters(character.results)
+  }
+
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1 className='title'>Rick & Morty</h1>
+        {characters? 
+          <Characters characters={characters} setCharacters={setCharacters}/>
+          :<>
+            <img src={imageHome} alt="Rcik & Morty" className='img-home'/>
+            <button onClick={handdleSelect} className="btn-search"> List of Characters </button>
+          </> }
       </header>
     </div>
   );
